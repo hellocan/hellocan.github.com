@@ -5,15 +5,26 @@
   
   <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
+  <meta name="description" content="##浅析Javascript的基本类型与引用类型##
+###基础类型和引用类型 ###指针与引用区别，通俗的说，指针其实就是一个存储地址的变量，之所以叫指针，是因为习惯性的理解为：指向某个地址；而引用，就是通过指针来实现的，引用把这些麻烦的指针操作都封装起来了，只看到最终的效果。在高级程序中，
+
+引用类型的值是保存在内存中的对象，与其他语言不同，javascript不允许直接访问内存中的位置，也就">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/09/14/9-13/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description">
+<meta property="og:description" content="##浅析Javascript的基本类型与引用类型##
+###基础类型和引用类型 ###指针与引用区别，通俗的说，指针其实就是一个存储地址的变量，之所以叫指针，是因为习惯性的理解为：指向某个地址；而引用，就是通过指针来实现的，引用把这些麻烦的指针操作都封装起来了，只看到最终的效果。在高级程序中，
+
+引用类型的值是保存在内存中的对象，与其他语言不同，javascript不允许直接访问内存中的位置，也就">
+<meta property="og:image" content="http://pic1.zhimg.com/6604224933c95787764d941432a1f968_r.jpg">
+<meta property="og:updated_time" content="2015-09-13T12:27:32.504Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
-<meta name="twitter:description">
+<meta name="twitter:description" content="##浅析Javascript的基本类型与引用类型##
+###基础类型和引用类型 ###指针与引用区别，通俗的说，指针其实就是一个存储地址的变量，之所以叫指针，是因为习惯性的理解为：指向某个地址；而引用，就是通过指针来实现的，引用把这些麻烦的指针操作都封装起来了，只看到最终的效果。在高级程序中，
+
+引用类型的值是保存在内存中的对象，与其他语言不同，javascript不允许直接访问内存中的位置，也就">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -59,9 +70,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-9-13" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-9-13" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/09/14/9-13/" class="article-date">
   <time datetime="2015-09-14T14:23:36.648Z" itemprop="datePublished">2015-09-14</time>
@@ -176,104 +185,20 @@ return target;
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-Constructor" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/14/Constructor/" class="article-date">
-  <time datetime="2015-09-14T14:23:31.746Z" itemprop="datePublished">2015-09-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="构造函数">构造函数</h2><p><strong>构造函数的主要问题，就是每个方法都要在每个实例上重新创建一遍</strong> </p>
-<p>因为在javascript中，对象是按引用传值的，如果包含一些属性作为默认值，它会被所有实例共享。</p>
+  
+    <a href="/2015/09/14/Constructor/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
 
-<p>私有和特权成员在函数的内部，在构造函数创建的每个实例中都会包含同样的私有和特权成员的副本，因而实例越多占用的内存越多.</p><br><p>我们必须很清楚js中公有、私有、静态属性和方法的应用区别;这时我就会通过具体的应用场景来理解。</p><br><p>A.prototype属性是在构造函数上(可以理解成是构造函数的的静态属性)，所以实例化的对象不能调用构造的prototype的;所以就有了在javascript中，对象实例并没有原型。</p><br><p>B.用对象字面量来写对象的时候.因为属性就是静态变量，即不需要new；</p><br><p>C.在jquery设计中，静态与实例方法共享设计；用构造函数jQuery（）的原型对象覆盖了构造函数jQuery.fn.init（）的原型对象， 这样构造函数jQuery.fn.init()的实例也可以访问构造函数JQuery()的原型方法和属性.</p>
-
-<pre><code><span class="keyword">var</span> $$ = jQuery =  <span class="function"><span class="keyword">function</span>(<span class="params">selector</span>) </span>{
-    <span class="keyword">return</span>  <span class="keyword">new</span>  jQuery.fn.init(selector);
-}
-jQuery.fn = jQuery.prototype ={
-    name:<span class="string">"meihong"</span>,
-    init:<span class="function"><span class="keyword">function</span>(<span class="params">selector</span>) </span>{
-        <span class="keyword">this</span>.selector = selector;
-        <span class="keyword">return</span> <span class="keyword">this</span>
-    },
-    <span class="constructor"><span class="keyword">constructor</span>:jQuery
-}
-jQuery.prototype.init.prototype = jQuery.fn;
-jQuery.fn.sayName = function() </span>{
-    <span class="keyword">return</span> <span class="keyword">this</span>.name;
-}
-<span class="built_in">console</span>.log($$(<span class="string">'#hellocan'</span>).sayName());
-</code></pre><p></p><p>这里的ajQuery.prototype相等于一个以对象字面量形式创建新的对象，虽然结果相同，但constructor指向了Object对象，其<em>proto</em>指向Object对象。可通过设置constructor属性，确保该属性能够访问到适当的值。</p><br>如何将消耗内存与线程结合？<br><img src="http://cdn.laruence.com/wp-content/uploads/javascript_object_layout.jpg" alt=""><p></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/14/Constructor/" data-id="ciek0yhxd0001tgqiqytk76fx" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
 
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/30/hello-world/" class="article-date">
-  <time datetime="2015-08-30T01:24:25.198Z" itemprop="datePublished">2015-08-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/30/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/08/30/hello-world/" data-id="cie01u3hc00009kqii3gj9rxi" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-  
 </section>
         
           <aside id="sidebar">
