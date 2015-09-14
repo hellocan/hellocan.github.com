@@ -61,173 +61,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-9-13" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/14/9-13/" class="article-date">
-  <time datetime="2015-09-14T14:23:36.648Z" itemprop="datePublished">2015-09-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>##浅析Javascript的基本类型与引用类型##</p>
-<p>###基础类型和引用类型 ###<br>指针与引用区别，通俗的说，指针其实就是一个存储地址的变量，之所以叫指针，是因为习惯性的理解为：指向某个地址；而引用，就是通过指针来实现的，引用把这些麻烦的指针操作都封装起来了，只看到最终的效果。<br>在高级程序中，</p>
-<blockquote>
-<p>引用类型的值是保存在内存中的对象，与其他语言不同，javascript不允许直接访问内存中的位置，也就是说不能直接操作对象的内存空间。在操作对象时，实际上是在操作对象的引用而不是实际的对象，为此，引用类型的值是按引用访问的。</p>
-</blockquote>
-<p> 基本数据类型值的复制</p>
-<pre><code><span class="variable"><span class="keyword">var</span> a</span>=<span class="number">1</span>;
-<span class="variable"><span class="keyword">var</span> b</span>=a;
-b=<span class="number">3</span>
-console.log(a);<span class="comment">//a=1</span>
-</code></pre><p>引用类型值的复制</p>
-<pre><code>var a = <span class="keyword">new</span> Object();
-a.value = <span class="number">1</span>;
-b = a;
-b.value = <span class="number">2</span>;
-console.<span class="built_in">log</span>(a.value)<span class="comment">//2</span>
-console.<span class="built_in">log</span>(c)
-</code></pre><p>对于引用类型，问题来了，我要是仍然要对a原来的数据进行操作？<br>对于引用类型的拷贝，即浅复制与深复制，用一个简单的例子加以区别。</p>
-<pre><code>var obj = { a:<span class="number">1</span>, arr: [<span class="number">1</span>,<span class="number">2</span>] };
-var shallowobj1 = obj;           <span class="comment">//浅复制 </span>
-var Cloneobj2 = deepCopy(obj);  <span class="comment">//深复制</span>
-obj.a = <span class="number">2</span>;
-console.<span class="built_in">log</span>(shallowobj1obj1.a); <span class="comment">//输出2</span>
-console.<span class="built_in">log</span>(Cloneobj2ob2.a);<span class="comment">//输出1；</span>
-</code></pre><p>简单的说，浅复制会导致 obj 和 obj1 指向同一块内存地址；而深复制一般都是开辟一块新的内存地址，将原对象的各个属性逐个复制出去。如下图所示：<br><img src="http://pic1.zhimg.com/6604224933c95787764d941432a1f968_r.jpg" alt=""><br>浅复制</p>
-<p>###Underscore —— <em>.clone()###<br>    // Create a (shallow-cloned) duplicate of an object.
-    </em>.clone = function(obj) {<br>    if (!<em>.isObject(obj)) return obj;<br>    return </em>.isArray(obj) ? obj.slice() : _.extend({}, obj);<br>    };<br> 这样一个方法是一种浅复制，通过源码可知是通过slice,$.extend({},obj)是通过浅复制的。还有concat也是浅复制。</p>
-<p>深复制<br>JSON全局对象<br>    var cloneObj = JSON.parse(JSON.stringify(obj))；<br>这个能正确处理的对象只有Number,String,Boolean,Array即被json直接表示的数据结构。</p>
-<p>###jQuery —— $.extend()###<br>可以通过JQuery中有$.extend（）方法来完成深复制。$.extend([deep],target,object1[,objectN]) 第一个参数是可选的布尔值，表示是否进行深度合并（递归合并）。$.extend(true, {}, obj)来实现深复制。<br>$.Clone（）的方法，但并不是用于一般引用类型的深复制，而是用于DOM对象；</p>
-<pre><code>jQuery.extend = jQuery.fn.extend = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-var src, copyIsArray, copy, name, options, clone,
-    target = arguments[<span class="number">0</span>] || {},
-    i = <span class="number">1</span>,
-    length = arguments.length,
-    deep = <span class="literal">false</span>;
-
-<span class="comment">// Handle a deep copy situation</span>
-<span class="keyword">if</span> <span class="params">( typeof target === <span class="string">"boolean"</span> )</span> {
-    deep = target;
-
-    <span class="comment">// skip the boolean and the target</span>
-    target = arguments[ i ] || {};
-    i++;
-}
-
-<span class="comment">// Handle case when target is a string or something (possible in deep copy)</span>
-<span class="keyword">if</span> <span class="params">( typeof target !== <span class="string">"object"</span> &amp;&amp; !jQuery.isFunction<span class="params">(target)</span> )</span> {
-    target = {};
-}
-
-<span class="comment">// extend jQuery itself if only one argument is passed</span>
-<span class="keyword">if</span> <span class="params">( i === length )</span> {
-    target = this;
-    i--;
-}
-
-<span class="keyword">for</span> <span class="params">( ; i &lt; length; i++ )</span> {
-    <span class="comment">// Only deal with non-null/undefined values</span>
-    <span class="keyword">if</span> <span class="params">( <span class="params">(options = arguments[ i ])</span> != null )</span> {
-        <span class="comment">// Extend the base object</span>
-        <span class="keyword">for</span> <span class="params">( name in options )</span> {
-            src = target[ name ];
-            copy = options[ name ];
-
-            <span class="comment">// Prevent never-ending loop</span>
-            <span class="keyword">if</span> <span class="params">( target === copy )</span> {
-                continue;
-            }
-
-            <span class="comment">// Recurse if we're merging plain objects or arrays</span>
-            <span class="keyword">if</span> <span class="params">( deep &amp;&amp; copy &amp;&amp; <span class="params">( jQuery.isPlainObject<span class="params">(copy)</span> || <span class="params">(copyIsArray = jQuery.isArray<span class="params">(copy)</span>)</span> )</span> )</span> {
-                <span class="keyword">if</span> <span class="params">( copyIsArray )</span> {
-                    copyIsArray = <span class="literal">false</span>;
-                    clone = src &amp;&amp; jQuery.isArray<span class="params">(src)</span> ? src : [];
-
-                } <span class="keyword">else</span> {
-                    clone = src &amp;&amp; jQuery.isPlainObject<span class="params">(src)</span> ? src : {};
-                }
-
-                <span class="comment">// Never move original objects, clone them</span>
-                target[ name ] = jQuery.extend<span class="params">( deep, clone, copy )</span>;
-
-            <span class="comment">// Don't bring in undefined values</span>
-            } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">( copy !== <span class="literal">undef</span>ined )</span> {
-                target[ name ] = copy;
-            }
-        }
-    }
-}
-
-<span class="comment">// Return the modified object</span>
-return target;
-};
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/14/9-13/" data-id="ciek0yhr60000tgqie5kgn3ah" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Constructor" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/14/Constructor/" class="article-date">
-  <time datetime="2015-09-14T14:23:31.746Z" itemprop="datePublished">2015-09-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="构造函数">构造函数</h2><p><strong>构造函数的主要问题，就是每个方法都要在每个实例上重新创建一遍</strong> </p>
-<p>因为在javascript中，对象是按引用传值的，如果包含一些属性作为默认值，它会被所有实例共享。</p>
-
-<p>私有和特权成员在函数的内部，在构造函数创建的每个实例中都会包含同样的私有和特权成员的副本，因而实例越多占用的内存越多.</p><br><p>我们必须很清楚js中公有、私有、静态属性和方法的应用区别;这时我就会通过具体的应用场景来理解。</p><br><p>A.prototype属性是在构造函数上(可以理解成是构造函数的的静态属性)，所以实例化的对象不能调用构造的prototype的;所以就有了在javascript中，对象实例并没有原型。</p><br><p>B.用对象字面量来写对象的时候.因为属性就是静态变量，即不需要new；</p><br><p>C.在jquery设计中，静态与实例方法共享设计；用构造函数jQuery（）的原型对象覆盖了构造函数jQuery.fn.init（）的原型对象， 这样构造函数jQuery.fn.init()的实例也可以访问构造函数JQuery()的原型方法和属性.</p>
-
-<pre><code><span class="keyword">var</span> $$ = jQuery =  <span class="function"><span class="keyword">function</span>(<span class="params">selector</span>) </span>{
-    <span class="keyword">return</span>  <span class="keyword">new</span>  jQuery.fn.init(selector);
-}
-jQuery.fn = jQuery.prototype ={
-    name:<span class="string">"meihong"</span>,
-    init:<span class="function"><span class="keyword">function</span>(<span class="params">selector</span>) </span>{
-        <span class="keyword">this</span>.selector = selector;
-        <span class="keyword">return</span> <span class="keyword">this</span>
-    },
-    <span class="constructor"><span class="keyword">constructor</span>:jQuery
-}
-jQuery.prototype.init.prototype = jQuery.fn;
-jQuery.fn.sayName = function() </span>{
-    <span class="keyword">return</span> <span class="keyword">this</span>.name;
-}
-<span class="built_in">console</span>.log($$(<span class="string">'#hellocan'</span>).sayName());
-</code></pre><p></p><p>这里的ajQuery.prototype相等于一个以对象字面量形式创建新的对象，虽然结果相同，但constructor指向了Object对象，其<em>proto</em>指向Object对象。可通过设置constructor属性，确保该属性能够访问到适当的值。</p><br>如何将消耗内存与线程结合？<br><img src="http://cdn.laruence.com/wp-content/uploads/javascript_object_layout.jpg" alt=""><p></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/14/Constructor/" data-id="ciek0yhxd0001tgqiqytk76fx" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/08/30/hello-world/" class="article-date">
@@ -263,7 +96,7 @@ jQuery.fn.sayName = function() </span>{
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/08/30/hello-world/" data-id="cie01u3hc00009kqii3gj9rxi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/08/30/hello-world/" data-id="ciek12mc20000ogqiz7l7khk1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -288,7 +121,7 @@ jQuery.fn.sayName = function() </span>{
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -298,14 +131,6 @@ jQuery.fn.sayName = function() </span>{
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2015/09/14/9-13/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2015/09/14/Constructor/">(no title)</a>
-          </li>
         
           <li>
             <a href="/2015/08/30/hello-world/">Hello World</a>
