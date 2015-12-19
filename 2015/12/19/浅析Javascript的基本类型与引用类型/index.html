@@ -51,15 +51,26 @@
 
 
 
-<meta name="description">
-<meta property="og:type" content="website">
+<meta name="description" content="##浅析Javascript的基本类型与引用类型##
+###基础类型和引用类型 ###指针与引用区别，通俗的说，指针其实就是一个存储地址的变量，之所以叫指针，是因为习惯性的理解为：指向某个地址；而引用，就是通过指针来实现的，引用把这些麻烦的指针操作都封装起来了，只看到最终的效果。在高级程序中，
+
+引用类型的值是保存在内存中的对象，与其他语言不同，javascript不允许直接访问内存中的位置，也就">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/12/19/浅析Javascript的基本类型与引用类型/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description">
+<meta property="og:description" content="##浅析Javascript的基本类型与引用类型##
+###基础类型和引用类型 ###指针与引用区别，通俗的说，指针其实就是一个存储地址的变量，之所以叫指针，是因为习惯性的理解为：指向某个地址；而引用，就是通过指针来实现的，引用把这些麻烦的指针操作都封装起来了，只看到最终的效果。在高级程序中，
+
+引用类型的值是保存在内存中的对象，与其他语言不同，javascript不允许直接访问内存中的位置，也就">
+<meta property="og:image" content="http://pic1.zhimg.com/6604224933c95787764d941432a1f968_r.jpg">
+<meta property="og:updated_time" content="2015-12-13T10:54:13.743Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
-<meta name="twitter:description">
+<meta name="twitter:description" content="##浅析Javascript的基本类型与引用类型##
+###基础类型和引用类型 ###指针与引用区别，通俗的说，指针其实就是一个存储地址的变量，之所以叫指针，是因为习惯性的理解为：指向某个地址；而引用，就是通过指针来实现的，引用把这些麻烦的指针操作都封装起来了，只看到最终的效果。在高级程序中，
+
+引用类型的值是保存在内存中的对象，与其他语言不同，javascript不允许直接访问内存中的位置，也就">
 
 
 
@@ -71,7 +82,7 @@
   };
 </script>
 
-  <title> Hexo </title>
+  <title>  | Hexo </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="">
@@ -92,9 +103,7 @@
 
 
 
-  <div class="container one-column 
-   page-home 
-">
+  <div class="container one-column page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -171,15 +180,9 @@
       <div class="main-inner">
         <div id="content" class="content">
           
-  <section id="posts" class="posts-expand">
 
+  <div id="posts" class="posts-expand">
     
-
-    
-    
-
-    
-      
 
   
   
@@ -200,100 +203,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/12/19/继承/" itemprop="url">
-                  未命名
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            發表於
-            <time itemprop="dateCreated" datetime="2015-12-19T16:44:30+08:00" content="2015-12-19">
-              2015-12-19
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>#继承<br>这是目前我们经常使用的一种继承方式，这样的方式就是我们所说的：寄生组合式继承，它是引用类型最理想的继承范式。</p>
-<pre><code>$.inherit = <span class="function"><span class="keyword">function</span>(<span class="params">subClass, superClass</span>) </span>{
-    <span class="keyword">var</span> temp = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>{};
-    temp.prototype = superClass.prototype;
-    <span class="keyword">var</span> subPro = <span class="keyword">new</span> temp();
-    subPro.constructor = subClass;
-    subPro.superClass_ = superClass.prototype;
-    subClass.prototype = subPro;
-};
-</code></pre><p>javascript主要通过原型链实现继承。<br>原型链的构建是通过一个类型的实例赋值给另一个构造函数的原型实现的。结果是:子类就能够访问父类的所有属性和方法。<br>当父类的实例属性为引用类型值，子类所有的实例会共享该属性.<br>这样会影响到所有实例对象。借用构造函数就是为了解决这一问题：函数只不过是在特定环境中执行代码的对象，可通过call（）与apply（）可以在新创建的的对象（将来）执行构造函数；即在子类构造函数的内部调用父类的构造函数；这样每个实例都会有自己的属性，并保证只使用构造函数模式来定义类，但该模式存在无法复用，将借用构造与原型链组合，为组合继承，通过借用构造函数继承实例属性，使用原型链继承共享的属性和方法，所以该继承，在对子类的实例化，都会对父类有两次实际的调用。在该寄生组合式继承，其实就是完善组合继承。实际上，我们的原型链继承只需要父类原型的一个副本，然后弥补因重写原型而失去的默认constructor属性。这样不必为了指定子类型的原型而调用父类的构造函数。</p>
-<p></p><p> 子类继承父类的原型方法，如果子类与父类方法名一样，会导致父类原型方法被重写；那么如何扩展父类原型方法，即可call（）与apply（）将需要拓展的父类方法指定到子类执行,然后添加需要在方法上拓展的，可通过</p><br>    subPro.superClass_.**.call(this)(父类原型上的方法)<p></p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/19/浅析Javascript的基本类型与引用类型/" itemprop="url">
-                  未命名
-                </a>
               
             
           </h1>
@@ -326,10 +235,7 @@
       
 
       
-        
-          <span itemprop="articleBody">
-            
-              <p>##浅析Javascript的基本类型与引用类型##</p>
+        <span itemprop="articleBody"><p>##浅析Javascript的基本类型与引用类型##</p>
 <p>###基础类型和引用类型 ###<br>指针与引用区别，通俗的说，指针其实就是一个存储地址的变量，之所以叫指针，是因为习惯性的理解为：指向某个地址；而引用，就是通过指针来实现的，引用把这些麻烦的指针操作都封装起来了，只看到最终的效果。<br>在高级程序中，</p>
 <blockquote>
 <p>引用类型的值是保存在内存中的对象，与其他语言不同，javascript不允许直接访问内存中的位置，也就是说不能直接操作对象的内存空间。在操作对象时，实际上是在操作对象的引用而不是实际的对象，为此，引用类型的值是按引用访问的。</p>
@@ -422,10 +328,7 @@ var src, copyIsArray, copy, name, options, clone,
 <span class="comment">// Return the modified object</span>
 return target;
 };
-</code></pre>
-            
-          </span>
-        
+</code></pre></span>
       
     </div>
 
@@ -433,211 +336,36 @@ return target;
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2015/12/19/构造函数/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
             
-              
-                
-                <a class="post-title-link" href="/2015/12/19/构造函数/" itemprop="url">
-                  未命名
-                </a>
-              
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            發表於
-            <time itemprop="dateCreated" datetime="2015-12-19T16:44:17+08:00" content="2015-12-19">
-              2015-12-19
-            </time>
-          </span>
-
-          
-
-          
+              <a href="/2015/12/19/继承/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
             
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
       
 
       
-        
-          <span itemprop="articleBody">
-            
-              <p>#构造函数<br><strong>构造函数的特点</strong></p>
-<p>特点就是每个方法都要在每个实例上重新创建一遍。因为在javascript中，对象是按引用传值的，如果包含一些属性作为默认值，它会被所有实例共享。</p><br><strong>构造函数的成员</strong><br><p>私有和特权成员在函数的内部，在构造函数创建的每个实例中都会包含同样的私有和特权成员的副本，因而实例越多占用的内存越多.我们必须很清楚js中公有、私有、静态属性和方法的应用区别;这时我就会通过具体的应用场景来理解。</p><br><strong>构造函数的属性</strong><br><p>A.prototype属性是在构造函数上(可以理解成是构造函数的的静态属性)，所以实例化的对象没有prototype的属性;所以就有了在javascript中，对象实例并没有原型。</p><br><p>B.用对象字面量来写对象的时候.因为属性就是静态变量，即不需要new；</p><br><p>C.在jquery设计中，静态与实例方法共享设计；用构造函数jQuery（）的原型对象覆盖了构造函数jQuery.fn.init（）的原型对象，这样构造函数jQuery.fn.init()的实例也可以访问构造函数JQuery()的原型方法和属性.</p>
-
-<pre><code><span class="keyword">var</span> $$ = jQuery =  <span class="function"><span class="keyword">function</span>(<span class="params">selector</span>) </span>{
-    <span class="keyword">return</span>  <span class="keyword">new</span>  jQuery.fn.init(selector);
-}
-jQuery.fn = jQuery.prototype ={
-    name:<span class="string">"meihong"</span>,
-    init:<span class="function"><span class="keyword">function</span>(<span class="params">selector</span>) </span>{
-        <span class="keyword">this</span>.selector = selector;
-        <span class="keyword">return</span> <span class="keyword">this</span>
-    },
-    <span class="constructor"><span class="keyword">constructor</span>:jQuery
-}
-jQuery.prototype.init.prototype = jQuery.fn;
-jQuery.fn.sayName = function() </span>{
-    <span class="keyword">return</span> <span class="keyword">this</span>.name;
-}
-<span class="built_in">console</span>.log($$(<span class="string">'#hellocan'</span>).sayName());
-</code></pre><p>这里的ajQuery.prototype相等于一个以对象字面量形式创建新的对象，虽然结果相同，但constructor指向了Object对象，其<em>proto</em>指向Object对象。可通过设置constructor属性，确保该属性能够访问到适当的值。</p>
-
-<p>如何将消耗内存与线程结合？<br><img src="http://cdn.laruence.com/wp-content/uploads/javascript_object_layout.jpg" alt=""></p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-      
 
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/14/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            發表於
-            <time itemprop="dateCreated" datetime="2015-09-14T22:42:11+08:00" content="2015-09-14">
-              2015-09-14
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-            
-          </span>
-        
+    <div class="post-spread">
       
     </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-
-  </section>
-
-  
+  </div>
 
 
         </div>
@@ -646,6 +374,10 @@ jQuery.fn.sayName = function() </span>{
 
 
         
+  <div class="comments" id="comments">
+    
+  </div>
+
 
       </div>
 
@@ -666,8 +398,17 @@ jQuery.fn.sayName = function() </span>{
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" src="/images/default_avatar.jpg" alt="John Doe" itemprop="image"/>
           <p class="site-author-name" itemprop="name">John Doe</p>
@@ -712,6 +453,23 @@ jQuery.fn.sayName = function() </span>{
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目錄</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
       
 
     </div>
@@ -782,6 +540,167 @@ jQuery.fn.sayName = function() </span>{
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
   
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
 
   <script type="text/javascript" src="/js/bootstrap.js"></script>
 
